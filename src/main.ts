@@ -1,6 +1,17 @@
 import { createApp } from 'vue'
+
+import router from './router'
+import store from './store'
+import { registerApp } from './global'
+import 'normalize.css'
+import './assets/css/index.less'
+
 import App from './App.vue'
 
-createApp(App).mount('#app')
+const app = createApp(App)
+// 按需导入elementUI
+registerApp(app)
+app.use(router)
+app.use(store)
 
-console.log('hahah')
+app.mount('#app')
