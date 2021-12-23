@@ -28,7 +28,8 @@
       "@/*": ["src/*"]
     },
     // 指定项目中可以使用的那些库的类型(proxy,window )
-    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
+    "suppressImplicitAnyIndexErrors": true
   },
   "include": [
     "src/**/*.ts",
