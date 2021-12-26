@@ -8,9 +8,17 @@ import {
   ElTabs,
   ElInput,
   ElCheckbox,
-  ElLink
+  ElLink,
+  ElContainer,
+  ElHeader,
+  ElAside,
+  ElMain,
+  ElMenu,
+  ElMenuItem,
+  ElMenuItemGroup,
+  ElSubMenu
 } from 'element-plus'
-// import * as ElIconModules from '@element-plus/icons-vue'
+import * as ElIconModules from '@element-plus/icons-vue'
 
 const components = [
   ElButton,
@@ -21,17 +29,25 @@ const components = [
   ElFormItem,
   ElInput,
   ElCheckbox,
-  ElLink
+  ElLink,
+  ElContainer,
+  ElHeader,
+  ElAside,
+  ElMain,
+  ElMenu,
+  ElMenuItemGroup,
+  ElMenuItem,
+  ElSubMenu
 ]
 
 export default function (app: App): void {
   for (const component of components) {
     app.component(component.name, component)
   }
-  // for (const iconName in ElIconModules) {
-  //   if (Reflect.has(ElIconModules, iconName)) {
-  //     const item: DefineComponent = ElIconModules[iconName]
-  //     app.component(iconName, item)
-  //   }
-  // }
+  for (const iconName in ElIconModules) {
+    if (Reflect.has(ElIconModules, iconName)) {
+      const item = ElIconModules[iconName]
+      app.component(iconName, item)
+    }
+  }
 }
