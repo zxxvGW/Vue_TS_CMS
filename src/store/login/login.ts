@@ -1,20 +1,33 @@
 import { Module } from 'vuex'
 import { ILoginState, IRootState } from '../@types'
-import { accountLoginRequest } from '@/service/login/login'
-import { IAccount } from '@/service/login/types'
+import {
+  accountLoginRequest,
+  requestUserInfoById,
+  requestUserMenusByRoleId
+} from '@/service/login/login'
+import { IAccount, IUserInfo } from '@/service/login/types'
+import localCache from '@/utils/cache'
+import router from '@/router'
 
 const loginModule: Module<ILoginState, IRootState> = {
   namespaced: true,
   state() {
     return {
       token: '',
-      userInfo: {}
+      userInfo: {},
+      userMenus: []
     }
   },
   getters: {},
   mutations: {
     changeToken(state, token: string) {
       state.token = token
+    },
+    changeUserInfo(state, userInfo: IUserInfo) {
+      state.userInfo = userInfo
+    },
+    changeUserMenus(state, userMenus: any) {
+      state.userMenus = userMenus
     }
   },
   actions: {
@@ -22,8 +35,36 @@ const loginModule: Module<ILoginState, IRootState> = {
       // 1.登录逻辑
       const loginResult = await accountLoginRequest(payload)
       const { id, token } = loginResult.data
-      console.log(id)
       commit('changeToken', token)
+      localCache.setCache('token', token)
+      // 2.请求用户信息
+      const userInfoResult = await requestUserInfoById(id)
+      console.log(userInfoResult)
+      const userInfo = userInfoResult.data
+      commit('changeUserInfo', userInfo)
+      localCache.setCache('userInfo', userInfo)
+      // 3.请求用户菜单
+      const userMenusResult = await requestUserMenusByRoleId(userInfo.role.id)
+      const userMenus = userMenusResult.data
+      commit('changeUserMenus', userMenus)
+      localCache.setCache('userMenus', userMenus)
+      // 跳转页面
+      router.push('/main')
+    },
+    // 本地写入vuex的内容
+    loadLoaclLogin({ commit }) {
+      const token = localCache.getCache('token')
+      const userInfo = localCache.getCache('userInfo')
+      const userMenus = localCache.getCache('userMenus')
+      if (token) {
+        commit('changeToken', token)
+      }
+      if (userInfo) {
+        commit('changeUserInfo', userInfo)
+      }
+      if (userMenus) {
+        commit('changeUserMenus', userMenus)
+      }
     }
   }
 }

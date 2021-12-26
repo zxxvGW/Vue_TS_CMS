@@ -20,8 +20,6 @@ class HTTP {
     this.interceptors = config.interceptors
     // 默认请求时显示loading界面
     this.showLoadiing = config.showLoading ?? DEFAULT_LOADING
-    // 添加所有实例的拦截器
-    this.addDefaultInterceptors()
     // 添加实例传入的请求拦截
     this.instance.interceptors.request.use(
       this.interceptors?.requestInterceptor,
@@ -32,6 +30,8 @@ class HTTP {
       this.interceptors?.responseInterceptor,
       this.interceptors?.responseInterceptorCatch
     )
+    // 添加所有实例的拦截器
+    this.addDefaultInterceptors()
   }
   // 添加所有实例的默认拦截器
   addDefaultInterceptors(): void {

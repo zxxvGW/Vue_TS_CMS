@@ -1,18 +1,21 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
+import loaclCache from '@/utils/cache'
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    redirect: '/login'
+    redirect: '/main'
   },
   {
     path: '/login',
+    name: 'login',
     component: () => import('../views/login/login.vue')
     // component: login
   },
   {
     path: '/main',
+    name: 'main',
     // component: () => import('../views/main/main.vue')
     component: () => import('@/views/main/main.vue')
   }
@@ -20,7 +23,16 @@ const routes: RouteRecordRaw[] = [
 
 const router = createRouter({
   routes,
-  history: createWebHashHistory()
+  history: createWebHistory()
+})
+
+router.beforeEach((to) => {
+  if (to.path !== '/login') {
+    const token = loaclCache.getCache('token')
+    if (!token) {
+      return '/login'
+    }
+  }
 })
 
 export default router

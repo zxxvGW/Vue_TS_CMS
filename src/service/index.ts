@@ -1,17 +1,17 @@
 import HTTP from './request'
 import { BASE_URL, TIME_OUT } from './request/config'
-// import localCache from '@/utils/cache'
+import localCache from '@/utils/cache'
 
 const http = new HTTP({
   baseURL: BASE_URL,
   timeout: TIME_OUT,
   interceptors: {
-    requestInterceptor: (config) => {
+    requestInterceptor: (config: any) => {
       // 携带token的拦截
-      // const token = localCache.getCache('token')
-      // if (token) {
-      //   config.headers.Authorization = `Bearer ${token}`
-      // }
+      const token = localCache.getCache('token')
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+      }
       return config
     },
     requestInterceptorCatch: (err) => {
