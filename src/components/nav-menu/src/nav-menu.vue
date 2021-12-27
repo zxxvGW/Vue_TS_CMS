@@ -26,7 +26,10 @@
 
             <!-- 渲染子menu -->
             <template v-for="subItem in item.children" :key="subItem.id">
-              <el-menu-item :index="subItem.id + ''">
+              <el-menu-item
+                :index="subItem.id + ''"
+                @click="handleMenuItemClick(subItem)"
+              >
                 <template #title>
                   <el-icon v-if="subItem.icon" :class="subItem.icon"
                     ><component :is="formatIconName(subItem.icon)"></component
@@ -56,6 +59,7 @@
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
 import { useStore } from '@/store'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   props: {
@@ -67,13 +71,21 @@ export default defineComponent({
   setup() {
     const store = useStore()
     const userMenus = computed(() => store.state.login.userMenus)
+    const router = useRouter()
     const formatIconName = (icon: string) => {
       return icon.replace('el-icon-', '')
     }
 
+    const handleMenuItemClick = (item: any) => {
+      router.push({
+        path: item.url ?? '/not-found'
+      })
+    }
+
     return {
       userMenus,
-      formatIconName
+      formatIconName,
+      handleMenuItemClick
     }
   }
 })
