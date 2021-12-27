@@ -40,6 +40,7 @@ import LoginAccount from './login-account.vue'
 import LoginPhone from './login-phone.vue'
 
 export default defineComponent({
+  components: { LoginAccount, LoginPhone },
   setup() {
     // 1.定义属性
     const isKeepPassword = ref(true)
@@ -60,8 +61,6 @@ export default defineComponent({
     return {
       Iphone,
       UserFilled,
-      LoginAccount,
-      LoginPhone,
       isKeepPassword,
       accountRef,
       phoneRef,
