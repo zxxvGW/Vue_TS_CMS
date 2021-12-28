@@ -1,6 +1,21 @@
 <template>
   <div class="user">
-    <h2>user</h2>
+    <div class="search">
+      <el-form label-width="100px">
+        <el-row>
+          <el-col :span="8">
+            <el-form-item label="用户名"> <el-input /> </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="用户名"> <el-input /> </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="用户名"> <el-input /> </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+    </div>
+    <div class="content"></div>
   </div>
 </template>
 
