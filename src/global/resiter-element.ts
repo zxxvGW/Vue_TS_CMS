@@ -24,7 +24,8 @@ import {
   ElRow,
   ElCol,
   ElSelect,
-  ElDatePicker
+  ElDatePicker,
+  ElOption
 } from 'element-plus'
 import * as ElIconModules from '@element-plus/icons-vue'
 
@@ -53,6 +54,7 @@ const components = [
   ElRow,
   ElCol,
   ElSelect,
+  ElOption,
   ElDatePicker
 ]
 
