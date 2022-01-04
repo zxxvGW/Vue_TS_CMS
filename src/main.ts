@@ -12,9 +12,9 @@ import App from './App.vue'
 const app = createApp(App)
 // 按需导入elementUI
 registerApp(app)
-app.use(router)
 app.use(store)
 // 初始化时，写入vuex store
 setupStore()
+app.use(router)
 
 app.mount('#app')
