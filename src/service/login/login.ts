@@ -1,5 +1,6 @@
 import http from '../index'
-import { IAccount, IDataType, ILoginResult, IUserInfo } from './types'
+import { IAccount, ILoginResult, IUserInfo } from './types'
+import { IDataType } from '../@types'
 enum LoginApi {
   AccountLohin = '/login',
   UserInfo = '/users/', //用法 、/users/1
