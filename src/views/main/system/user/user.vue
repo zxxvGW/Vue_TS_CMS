@@ -1,63 +1,25 @@
 <template>
   <div class="user">
     <page-search :search-form-config="searchFormConfig" />
-
-    <div class="content">
-      <g-table :list-data="userList" :prop-list="propList">
-        <template #status="scope">
-          <el-button
-            plain
-            size="mini"
-            :type="scope.row.enable ? 'success' : 'danger'"
-          >
-            {{ scope.row.enable ? '启用' : '禁用' }}
-          </el-button>
-        </template>
-      </g-table>
-    </div>
+    <page-content :content-table-config="contentTableConfig" />
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { defineComponent } from 'vue'
 import PageSearch from '@/components/page-search'
 import { searchFormConfig } from './config/seach.config'
-import { useStore } from '@/store'
-import GTable from '@/base-ui/table'
+
+import PageContent from '@/components/page-content/src/page-content.vue'
+import { contentTableConfig } from './config/content.config'
 
 export default defineComponent({
-  components: { PageSearch, GTable },
+  components: { PageSearch, PageContent },
   setup() {
-    const store = useStore()
-    store.dispatch('system/getPageListAction', {
-      pageUrl: '/users/list',
-      queryInfo: {
-        offset: 0,
-        size: 10
-      }
-    })
-    const userList = computed(() => store.state.system.userList)
-    const propList = [
-      { prop: 'name', label: '用户名', minWidth: '100' },
-      { prop: 'realname', label: '用户名', minWidth: '100' },
-      { prop: 'cellphone', label: '手机号码', minWidth: '100' },
-      { prop: 'enable', label: '状态', minWidth: '100', slotName: 'status' },
-      // { prop: 'department', label: '部门', minWidth: '100' },
-      { prop: 'createAt', label: '创建时间', minWidth: '250' },
-      { prop: 'updateAt', label: '更新时间', minWidth: '250' }
-    ]
     return {
-      userList,
-      propList,
-      searchFormConfig
+      searchFormConfig,
+      contentTableConfig
     }
   }
 })
 </script>
-
-<style scoped>
-.content {
-  padding: 20px;
-  border-top: 20px solid #f5f5f5;
-}
-</style>

@@ -1,7 +1,8 @@
 import 'element-plus/dist/index.css'
 import { App } from 'vue'
-import registerElement from './resiter-element'
-
+import regsiterElement from './regsiter-element'
+import regsiterProperties from './regsiter-properies'
 export function registerApp(app: App): void {
-  registerElement(app)
+  app.use(regsiterElement)
+  app.use(regsiterProperties)
 }
