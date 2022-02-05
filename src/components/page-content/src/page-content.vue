@@ -1,6 +1,6 @@
 <template>
   <div class="page-content">
-    <g-table :list-data="userList" v-bind="contentTableConfig">
+    <g-table :list-data="dateList" v-bind="contentTableConfig">
       <!-- 1.header的插槽 -->
       <template #headerHandler>
         <el-button type="primary" size="medium">新建用户</el-button>
@@ -49,23 +49,29 @@ export default defineComponent({
     contentTableConfig: {
       type: Object,
       required: true
+    },
+    pageName: {
+      type: String,
+      required: true
     }
   },
-  setup() {
+  setup(props) {
     const store = useStore()
     store.dispatch('system/getPageListAction', {
-      pageUrl: '/users/list',
+      pageName: props.pageName,
       queryInfo: {
         offset: 0,
         size: 10
       }
     })
-    const userList = computed(() => store.state.system.userList)
+    const dateList = computed(() =>
+      store.getters[`system/pageListData`](props.pageName)
+    )
 
     return {
       Delete,
       Edit,
-      userList
+      dateList
     }
   }
 })
