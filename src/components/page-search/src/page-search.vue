@@ -8,7 +8,9 @@
             <el-button :icon="Refresh" @click="handleResetClick"
               >重置</el-button
             >
-            <el-button type="primary" :icon="Search">查找</el-button>
+            <el-button type="primary" :icon="Search" @click="handleQueryClick"
+              >查找</el-button
+            >
           </div>
         </template>
       </v-form>
@@ -30,7 +32,8 @@ export default defineComponent({
     }
   },
   components: { VForm },
-  setup(props) {
+  emits: ['resetBtnClick', 'queryBtnClick'],
+  setup(props, { emit }) {
     // 1.formData中的属性应该动态决定
     const formItems = props.searchFormConfig?.formItems ?? []
     const formOriginData: any = {}
@@ -45,12 +48,17 @@ export default defineComponent({
       //   formData.value[`${key}`] = formOriginData[key]
       // }
       formData.value = formOriginData
+      emit('resetBtnClick')
+    }
+    const handleQueryClick = () => {
+      emit('queryBtnClick', formData.value)
     }
     return {
       formData,
       Search,
       Refresh,
-      handleResetClick
+      handleResetClick,
+      handleQueryClick
     }
   }
 })

@@ -57,13 +57,19 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore()
-    store.dispatch('system/getPageListAction', {
-      pageName: props.pageName,
-      queryInfo: {
-        offset: 0,
-        size: 10
-      }
-    })
+    const getPageData = (queryInfo: any = {}) => {
+      store.dispatch('system/getPageListAction', {
+        pageName: props.pageName,
+        queryInfo: {
+          offset: 0,
+          size: 10,
+          ...queryInfo
+        }
+      })
+    }
+
+    getPageData()
+
     const dateList = computed(() =>
       store.getters[`system/pageListData`](props.pageName)
     )
@@ -71,7 +77,8 @@ export default defineComponent({
     return {
       Delete,
       Edit,
-      dateList
+      dateList,
+      getPageData
     }
   }
 })
