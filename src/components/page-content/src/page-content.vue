@@ -38,6 +38,17 @@
           >
         </div>
       </template>
+
+      <!-- 在page-content中动态插入剩余插槽 -->
+      <template
+        v-for="item in otherPropSlots"
+        :key="item.prop"
+        #[item.slotName]="scope"
+      >
+        <template v-if="item.slotName">
+          <slot :name="item.slotName" :row="scope.row"></slot>
+        </template>
+      </template>
     </g-table>
   </div>
 </template>
@@ -63,10 +74,10 @@ export default defineComponent({
   setup(props) {
     // store
     const store = useStore()
-    // 双向数据绑定pageInfo
+    // 1.双向数据绑定pageInfo
     const pageInfo = ref({ currentPage: 1, pageSize: 10 })
     watch(pageInfo, () => getPageData())
-    // 发送网络请求
+    // 2.发送网络请求
     const getPageData = (queryInfo: any = {}) => {
       store.dispatch('system/getPageListAction', {
         pageName: props.pageName,
@@ -79,13 +90,22 @@ export default defineComponent({
     }
 
     getPageData()
-    // 从store里取数据列表
+    // 3.从store里取数据列表
     const dateList = computed(() =>
       store.getters[`system/pageListData`](props.pageName)
     )
-    // 从store里取数据计数
+    // 3.从store里取数据计数
     const dataCount = computed(() =>
       store.getters[`system/pageListCount`](props.pageName)
+    )
+
+    // 4.获取其他动态插槽名称
+    const otherPropSlots = props.contentTableConfig?.propList.filter(
+      (item: any) => {
+        return !['status', 'createAt', 'updateAt', 'handler'].includes(
+          item.slotName
+        )
+      }
     )
 
     return {
@@ -94,6 +114,7 @@ export default defineComponent({
       dateList,
       dataCount,
       pageInfo,
+      otherPropSlots,
       getPageData
     }
   }
