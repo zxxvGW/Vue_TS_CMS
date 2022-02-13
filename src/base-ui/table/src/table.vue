@@ -83,10 +83,6 @@ export default defineComponent({
   },
   emits: ['selectionChange', 'update:page'],
   setup(props, { emit }) {
-    const handleSelectionChange = (value: any) => {
-      emit('selectionChange', value)
-    }
-
     const handleCurrentChange = (currentPage: number) => {
       emit('update:page', { ...props.page, currentPage })
     }
@@ -95,8 +91,7 @@ export default defineComponent({
     }
     return {
       handleSizeChange,
-      handleCurrentChange,
-      handleSelectionChange
+      handleCurrentChange
     }
   }
 })
