@@ -1,6 +1,11 @@
 <template>
   <div class="page-content">
-    <g-table :list-data="dateList" v-bind="contentTableConfig">
+    <g-table
+      :list-data="dateList"
+      :list-count="dataCount"
+      v-bind="contentTableConfig"
+      v-model:page="pageInfo"
+    >
       <!-- 1.header的插槽 -->
       <template #headerHandler>
         <el-button type="primary" size="medium">新建用户</el-button>
@@ -39,7 +44,7 @@
 
 <script lang="ts">
 import GTable from '@/base-ui/table'
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, ref, watch } from 'vue'
 import { useStore } from '@/store'
 import { Delete, Edit } from '@element-plus/icons-vue'
 
@@ -56,28 +61,39 @@ export default defineComponent({
     }
   },
   setup(props) {
+    // store
     const store = useStore()
+    // 双向数据绑定pageInfo
+    const pageInfo = ref({ currentPage: 0, pageSize: 10 })
+    watch(pageInfo, () => getPageData())
+    // 发送网络请求
     const getPageData = (queryInfo: any = {}) => {
       store.dispatch('system/getPageListAction', {
         pageName: props.pageName,
         queryInfo: {
-          offset: 0,
-          size: 10,
+          offset: pageInfo.value.currentPage * pageInfo.value.pageSize,
+          size: pageInfo.value.pageSize,
           ...queryInfo
         }
       })
     }
 
     getPageData()
-
+    // 从store里取数据列表
     const dateList = computed(() =>
       store.getters[`system/pageListData`](props.pageName)
+    )
+    // 从store里取数据计数
+    const dataCount = computed(() =>
+      store.getters[`system/pageListCount`](props.pageName)
     )
 
     return {
       Delete,
       Edit,
       dateList,
+      dataCount,
+      pageInfo,
       getPageData
     }
   }

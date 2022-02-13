@@ -33,10 +33,13 @@
     <div class="footer">
       <slot name="footer">
         <el-pagination
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
+          :page-sizes="[10, 20, 30]"
+          :current-page="page.currentPage"
+          :page-size="page.pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
+          :total="listCount"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
         >
         </el-pagination>
       </slot>
@@ -58,6 +61,10 @@ export default defineComponent({
       type: Array as any,
       required: true
     },
+    listCount: {
+      type: Number,
+      default: 0
+    },
     propList: {
       type: Array as any
     },
@@ -68,10 +75,29 @@ export default defineComponent({
     showSelectColumn: {
       type: Boolean,
       default: false
+    },
+    page: {
+      type: Object,
+      default: () => ({ currentPage: 0, pageSize: 0 })
     }
   },
-  setup() {
-    return {}
+  emits: ['selectionChange', 'update:page'],
+  setup(props, { emit }) {
+    const handleSelectionChange = (value: any) => {
+      emit('selectionChange', value)
+    }
+
+    const handleCurrentChange = (currentPage: number) => {
+      emit('update:page', { ...props.page, currentPage })
+    }
+    const handleSizeChange = (pageSize: number) => {
+      emit('update:page', { ...props.page, pageSize })
+    }
+    return {
+      handleSizeChange,
+      handleCurrentChange,
+      handleSelectionChange
+    }
   }
 })
 </script>
