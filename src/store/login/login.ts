@@ -8,7 +8,7 @@ import {
 } from '@/service/login/login'
 import { IAccount, IUserInfo } from '@/service/login/types'
 import localCache from '@/utils/cache'
-import { mapMenusToRoutes } from '@/utils/map-menus'
+import { mapMenusToPermission, mapMenusToRoutes } from '@/utils/map-menus'
 import router from '@/router'
 
 const loginModule: Module<ILoginState, IRootState> = {
@@ -17,7 +17,8 @@ const loginModule: Module<ILoginState, IRootState> = {
     return {
       token: '',
       userInfo: {},
-      userMenus: []
+      userMenus: [],
+      permissions: []
     }
   },
   getters: {},
@@ -37,6 +38,10 @@ const loginModule: Module<ILoginState, IRootState> = {
       routes.forEach((route) => {
         router.addRoute('main', route)
       })
+      // 获取用户权限
+      const permissions = mapMenusToPermission(userMenus)
+      // console.log(permissions)
+      state.permissions = permissions
     }
   },
   actions: {
