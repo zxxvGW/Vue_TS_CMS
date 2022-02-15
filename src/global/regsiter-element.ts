@@ -31,7 +31,8 @@ import {
   ElTable,
   ElTableColumn,
   ElPagination,
-  ElImage
+  ElImage,
+  ElDialog
 } from 'element-plus'
 import * as ElIconModules from '@element-plus/icons-vue'
 
@@ -67,7 +68,8 @@ const components = [
   ElTable,
   ElTableColumn,
   ElPagination,
-  ElImage
+  ElImage,
+  ElDialog
 ]
 
 export default function (app: App): void {

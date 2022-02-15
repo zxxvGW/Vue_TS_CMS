@@ -8,8 +8,12 @@
     >
       <!-- 1.header的插槽 -->
       <template #headerHandler>
-        <el-button v-if="isCreate" type="primary" size="medium"
-          >新建用户</el-button
+        <el-button
+          v-if="isCreate"
+          type="primary"
+          size="medium"
+          @click="handleNewClick"
+          >新建</el-button
         >
       </template>
 
@@ -34,7 +38,13 @@
 
       <template #handler="scope">
         <div class="handle-btns">
-          <el-button size="mini" :icon="Edit" v-if="isUpdate">编辑</el-button>
+          <el-button
+            size="mini"
+            :icon="Edit"
+            v-if="isUpdate"
+            @click="handleEditClick(scope.row)"
+            >编辑</el-button
+          >
           <el-button
             size="mini"
             type="danger"
@@ -62,8 +72,8 @@
 </template>
 
 <script lang="ts">
-import GTable from '@/base-ui/table'
 import { computed, defineComponent, ref, watch } from 'vue'
+import GTable from '@/base-ui/table'
 import { useStore } from '@/store'
 import { Delete, Edit } from '@element-plus/icons-vue'
 import { usePermission } from '@/hooks/use-permission'
@@ -80,7 +90,8 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props) {
+  emits: ['newBtnClick', 'editBtnClick'],
+  setup(props, { emit }) {
     // store
     const store = useStore()
     // 获取用户权限
@@ -133,6 +144,14 @@ export default defineComponent({
       console.log(item)
     }
 
+    const handleEditClick = (item: any) => {
+      emit('editBtnClick', item)
+    }
+
+    const handleNewClick = () => {
+      emit('newBtnClick')
+    }
+
     return {
       Delete,
       Edit,
@@ -145,7 +164,9 @@ export default defineComponent({
       isUpdate,
       isDelete,
       isQuery,
-      handleDeleteClick
+      handleDeleteClick,
+      handleEditClick,
+      handleNewClick
     }
   }
 })

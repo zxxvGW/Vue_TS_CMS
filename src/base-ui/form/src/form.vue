@@ -19,6 +19,7 @@
                   :placeholder="item.placeholder"
                   :show-password="item.type === 'password'"
                   v-bind="item.otherOptions"
+                  style="width: 100%"
                   :model-value="modelValue[`${item.field}`]"
                   @update:model-value="handleValueChange($event, item.field)"
                 />
@@ -76,7 +77,7 @@ export default defineComponent({
     },
     labelWidth: {
       type: String,
-      default: '100px'
+      default: '80px'
     },
     itemStyle: {
       type: Object,

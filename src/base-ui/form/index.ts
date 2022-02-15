@@ -1,5 +1,5 @@
-import VForm from './src/form.vue'
+import GForm from './src/form.vue'
 
 export * from './@types'
 
-export default VForm
+export default GForm
