@@ -32,7 +32,7 @@
         <strong>{{ $filter.formatTime(scope.row.updateAt) }}</strong>
       </template>
 
-      <template #handler>
+      <template #handler="scope">
         <div class="handle-btns">
           <el-button size="mini" :icon="Edit" v-if="isUpdate">编辑</el-button>
           <el-button
@@ -41,6 +41,7 @@
             plain
             :icon="Delete"
             v-if="isDelete"
+            @click="handleDeleteClick(scope.row)"
             >删除</el-button
           >
         </div>
@@ -122,6 +123,15 @@ export default defineComponent({
         )
       }
     )
+    // 5.删除，编辑，新建
+    const handleDeleteClick = (item: any) => {
+      // console.log(item)
+      store.dispatch('system/deletePageDataAction', {
+        pageName: props.pageName,
+        id: item.id
+      })
+      console.log(item)
+    }
 
     return {
       Delete,
@@ -134,7 +144,8 @@ export default defineComponent({
       isCreate,
       isUpdate,
       isDelete,
-      isQuery
+      isQuery,
+      handleDeleteClick
     }
   }
 })
