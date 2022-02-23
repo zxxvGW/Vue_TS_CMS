@@ -1,7 +1,7 @@
 <template>
   <div class="page-search">
     <div class="search">
-      <v-form v-bind="searchFormConfig" v-model="formData">
+      <g-form v-bind="searchFormConfig" v-model="formData">
         <template #header> 高级检索 </template>
         <template #footer>
           <div class="handle-btns">
@@ -13,14 +13,14 @@
             >
           </div>
         </template>
-      </v-form>
+      </g-form>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import VForm from '@/base-ui/form'
+import GForm from '@/base-ui/form'
 import { Search, Refresh } from '@element-plus/icons-vue'
 
 export default defineComponent({
@@ -31,7 +31,7 @@ export default defineComponent({
       required: true
     }
   },
-  components: { VForm },
+  components: { GForm },
   emits: ['resetBtnClick', 'queryBtnClick'],
   setup(props, { emit }) {
     // 1.formData中的属性应该动态决定
